@@ -1,0 +1,11 @@
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: #2A4EE0;
+}
+
+body {
+  min-height: 100vh;
+}

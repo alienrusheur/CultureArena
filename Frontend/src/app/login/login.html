@@ -1,0 +1,47 @@
+<div class="Pagedeconnexion">
+    <div class="LogoApp">
+        <img src="/image/CultureArena.png" alt="LogoDeLApp">
+    </div>
+    <div class="logoconnexion">
+        <img src="/image/LogoPageDeConnexion.png" alt="Logo CultureArena">
+    </div>
+    <h1>Bienvenue !</h1>
+    <p>Connecte toi à ton compte</p>
+    <div class="Encadré">
+        <div class="tabs">
+            <button type="button" class="connexion">Connexion</button>
+            <button type="button" class="Inscription">Inscription</button>
+        </div>
+        <form id="authForm" onsubmit="handleSubmit(event)">
+
+            <input type="text" id="pseudonyme" placeholder="Pseudonyme" style="display:none;">
+
+            <input type="email" id="email" class="input-email" placeholder="Adresse mail" required>
+
+            <input type="password" id="motDePasse" class="input-password" placeholder="Mot de passe" required>
+            <p class="hint" id="hint" style="display:none;">8 caractères minimum</p>
+
+            <div class="error" id="errorBox"></div>
+
+            <div class="forgot" id="forgotRow">
+                <a href="#">Mot de passe oublié ?</a>
+            </div>
+
+            <button type="submit" class="submit" id="submitBtn">Se connecter</button>
+
+        </form>
+        <div class="autremoyen">
+            <hr class="ma-ligne">
+            <span>Ou continue avec</span>
+            <hr class="ma-ligne">
+        </div>
+
+        <div class="ConexionReseau">
+            <button type="button"><img src="/image/Logo Google.png" alt="LogoGoogle">Google</button>
+            <button type="button"><img src="/image/Logo Facebook.png" alt="LogoFacebook">Facebook</button>
+        </div>
+        <p class="pasdecompte" id="switchRow">
+            Pas encore de compte ? <a href="#" onclick="setMode('signup'); return false;">Inscrit toi !</a>
+        </p>
+    </div>
+</div>
