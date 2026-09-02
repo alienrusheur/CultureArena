@@ -33,7 +33,6 @@ p {
   opacity: 0.9;
 }
 
-/* LOGO */
 .logoconnexion img {
   width: min(185px, 55vw);
   height: auto;
@@ -41,7 +40,6 @@ p {
   margin: 0 auto;
 }
 
-/* CADRE */
 .Encadré {
   background-color: #FEFCF6;
   width: 100%;
@@ -54,7 +52,6 @@ p {
   text-align: left;
 }
 
-/* ONGLETS */
 .tabs {
   display: flex;
   gap: 20px;
@@ -65,21 +62,21 @@ p {
 .tabs button {
   font-family: 'Happy Monkey', sans-serif;
   flex: 1;
+  min-width: 0;
   padding: 12px 8px;
   border-radius: 999px;
   border: 1.5px solid #E4E7F2;
   font-weight: bold;
   cursor: pointer;
-  min-width: 0;
 }
 
 .connexion {
-  background-color: #2563EB;
-  color: #FFFFF9;
+  background-color: #FFFFF9;
+  color: #000000;
 }
 
 .Inscription {
-  background-color: #FEFCF6;
+  background-color: #2563EB;
 }
 
 .tabs button.active {
@@ -88,9 +85,9 @@ p {
   color: #fff;
 }
 
-/* INPUTS */
 #authForm input {
   width: 100%;
+  min-width: 0;
   padding: 14px 18px;
   margin-bottom: 14px;
   border-radius: 999px;
@@ -98,11 +95,18 @@ p {
   font-size: 15px;
   outline: none;
   font-family: 'Happy Monkey', sans-serif;
-  min-width: 0;
+}
+
+#authForm input.input-text {
+  background-image: url('/image/Username.png');
+  background-repeat: no-repeat;
+  background-position: 12px center;
+  background-size: 20px 20px;
+  padding-left: 40px;
 }
 
 #authForm input.input-email {
-  background-image: url('/image/Username.png');
+  background-image: url('/image/Email.png');
   background-repeat: no-repeat;
   background-position: 12px center;
   background-size: 20px 20px;
@@ -117,7 +121,6 @@ p {
   padding-left: 40px;
 }
 
-/* MOT DE PASSE OUBLIE */
 .forgot {
   text-align: right;
   font-size: 13px;
@@ -128,7 +131,19 @@ p {
   color: #2563EB;
 }
 
-/* BOUTON CONNEXION */
+.error {
+  background: #FDECEC;
+  border: 1.5px solid #F5B5B5;
+  color: #B42318;
+  border-radius: 12px;
+  padding: 10px 14px;
+  font-size: 13px;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 14px;
+  width: 100%;
+}
+
 .submit {
   width: 100%;
   padding: 15px;
@@ -142,13 +157,13 @@ p {
   font-family: 'Happy Monkey', sans-serif;
 }
 
-/* AUTRE MOYEN */
 .autremoyen {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 10px;
   margin: 20px 0;
+  width: 100%;
 }
 
 .autremoyen .ma-ligne {
@@ -165,7 +180,6 @@ p {
   font-family: 'Happy Monkey', sans-serif;
 }
 
-/* CONNEXION RESEAUX */
 .ConexionReseau {
   display: flex;
   gap: 12px;
@@ -194,7 +208,6 @@ p {
   flex-shrink: 0;
 }
 
-/* PAS DE COMPTE */
 .pasdecompte {
   text-align: center;
   font-size: 14px;
@@ -207,10 +220,7 @@ p {
   font-weight: bold;
 }
 
-
-/* ========================= */
-/* 📱 PETITS TELEPHONES */
-/* ========================= */
+/* 📱 TELEPHONE  */
 
 @media (max-width: 480px) {
 
@@ -251,11 +261,25 @@ p {
     font-size: 14px;
   }
 
+  .error {
+    font-size: 12px;
+    padding: 9px 10px;
+  }
+
   .submit {
     padding: 13px;
     font-size: 15px;
   }
 
+  .autremoyen {
+    gap: 6px;
+  }
+
+  .autremoyen span {
+    font-size: 12px;
+  }
+
+  /* Les boutons deviennent verticaux */
   .ConexionReseau {
     flex-direction: column;
     gap: 10px;
@@ -268,35 +292,5 @@ p {
 
   .pasdecompte {
     font-size: 13px;
-  }
-}
-
-
-/* ========================= */
-/* 📱 TRÈS PETITS TELEPHONES */
-/* ========================= */
-
-@media (max-width: 350px) {
-
-  .Encadré {
-    padding: 15px;
-    border-radius: 25px;
-  }
-
-  .tabs {
-    gap: 6px;
-  }
-
-  .tabs button {
-    font-size: 12px;
-    padding: 9px 4px;
-  }
-
-  .autremoyen {
-    gap: 6px;
-  }
-
-  .autremoyen span {
-    font-size: 12px;
   }
 }

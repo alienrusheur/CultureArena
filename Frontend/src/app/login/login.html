@@ -9,14 +9,12 @@
     <p>Connecte toi à ton compte</p>
     <div class="Encadré">
         <div class="tabs">
-            <button type="button" class="connexion">Connexion</button>
-            <button type="button" class="Inscription">Inscription</button>
+            <button type="button" class="connexion" routerLink="/login">Connexion</button>
+            <button type="button" class="Inscription" routerLink="/register">Inscription</button>
         </div>
         <form id="authForm" onsubmit="handleSubmit(event)">
 
-            <input type="text" id="pseudonyme" placeholder="Pseudonyme" style="display:none;">
-
-            <input type="email" id="email" class="input-email" placeholder="Adresse mail" required>
+            <input type="email" id="email" class="input-email" placeholder="Mail ou pseudonyme" required>
 
             <input type="password" id="motDePasse" class="input-password" placeholder="Mot de passe" required>
             <p class="hint" id="hint" style="display:none;">8 caractères minimum</p>
@@ -40,8 +38,7 @@
             <button type="button"><img src="/image/Logo Google.png" alt="LogoGoogle">Google</button>
             <button type="button"><img src="/image/Logo Facebook.png" alt="LogoFacebook">Facebook</button>
         </div>
-        <p class="pasdecompte" id="switchRow">
-            Pas encore de compte ? <a href="#" onclick="setMode('signup'); return false;">Inscrit toi !</a>
-        </p>
+
+        <p class="pasdecompte">Pas de compte ? <a routerLink="/register">Inscris-toi !</a></p>
     </div>
 </div>

@@ -1,0 +1,53 @@
+<div class="Pagedeconnexion">
+    <div class="LogoApp">
+        <img src="/image/CultureArena.png" alt="LogoDeLApp">
+    </div>
+    <div class="logoconnexion">
+        <img src="/image/LogoPageDeConnexion.png" alt="Logo CultureArena">
+    </div>
+    <h1>Rejoins la partie</h1>
+    <p>Crée toi un compte</p>
+
+    <div class="Encadré">
+        <div class="tabs">
+            <button class="connexion" routerLink="/login" routerLinkActive="active">Connexion</button>
+            <button class="Inscription" routerLink="/register" routerLinkActive="active">Inscription</button>
+        </div>
+
+        <form id="authForm" onsubmit="handleSubmit(event)">
+
+            <input type="text" id="pseudonyme" class="input-text" placeholder="Pseudonyme" required>
+
+            <input type="email" id="email" class="input-email" placeholder="Adresse mail" required>
+
+            <input type="password" id="motDePasse" class="input-password" placeholder="Mot de passe" required>
+            <p class="hint" id="hint" style="display:none;">8 caractères minimum</p>
+
+            <input type="password" id="confirmMotDePasse" class="input-password" placeholder="Confirmer le mot de passe"
+                required>
+            <p class="hint" id="confirmHint" style="display:none;">Les mots de passe doivent correspondre</p>
+
+            <div class="error" id="errorBox"></div>
+
+            <div class="forgot" id="forgotRow">
+                <a href="#">Mot de passe oublié ?</a>
+            </div>
+
+            <button type="submit" class="submit" id="submitBtn">S'inscrire</button>
+
+        </form>
+
+        <p class="autremoyen">Ou continue avec</p>
+
+        <div class="ConexionReseau">
+            <button type="button" (click)="loginWith('google')">
+                <img src="/image/Logo Google.png" alt="LogoGoogle">Google
+            </button>
+            <button type="button" (click)="loginWith('facebook')">
+                <img src="/image/Logo Facebook.png" alt="LogoFacebook">Facebook
+            </button>
+        </div>
+
+        <p class="pasdecompte">Deja un compte ? <a routerLink="/login">Connecte toi !</a></p>
+    </div>
+</div>

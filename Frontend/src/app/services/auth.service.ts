@@ -1,98 +1,70 @@
-import { Injectable, signal, computed } from '@angular/core';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { Observable, tap, map, catchError, throwError } from 'rxjs';
-import {
-  ApiError,
-  ApiResponse,
-  AuthData,
-  LoginPayload,
-  RegisterPayload,
-  Utilisateur
-} from '../models/auth.models';
-
-const API_URL = 'http://localhost:3000/api/auth';
-
-const TOKEN_KEY = 'culturearena_token';
-const USER_KEY = 'culturearena_utilisateur';
-
-export class AuthApiError extends Error {
-  constructor(public readonly type: string, message: string, public readonly status: number) {
-    super(message);
-  }
+import { Injectable, computed, inject, signal } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
+import { Observable, tap } from 'rxjs';
+export interface User {
+ _id: string;
+ nom: string;
+ email: string;
+ role: 'user' | 'admin';
 }
-
+export interface ApiResponse<T> { success: boolean; data: T; }
+export interface AuthData { token: string; user: User; }
+export interface RegisterPayload { nom: string; email: string;
+mot_de_passe: string; }
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-
-  private readonly utilisateurSig = signal<Utilisateur | null>(this.lireUtilisateurStocke());
-  readonly utilisateur = this.utilisateurSig.asReadonly();
-  readonly estConnecte = computed(() => this.utilisateurSig() !== null);
-
-  constructor(private http: HttpClient) {}
-
-  register(payload: RegisterPayload): Observable<AuthData> {
-    return this.http.post<ApiResponse<AuthData>>(`${API_URL}/register`, payload).pipe(
-      map((res) => this.extraireData(res)),
-      tap((data) => this.stockerSession(data)),
-      catchError((err: HttpErrorResponse) => this.gererErreur(err))
-    );
-  }
-
-  login(payload: LoginPayload): Observable<AuthData> {
-    return this.http.post<ApiResponse<AuthData>>(`${API_URL}/login`, payload).pipe(
-      map((res) => this.extraireData(res)),
-      tap((data) => this.stockerSession(data)),
-      catchError((err: HttpErrorResponse) => this.gererErreur(err))
-    );
-  }
-
-  logout(): void {
-    localStorage.removeItem(TOKEN_KEY);
-    localStorage.removeItem(USER_KEY);
-    this.utilisateurSig.set(null);
-  }
-
-  getToken(): string | null {
-    return localStorage.getItem(TOKEN_KEY);
-  }
-
-  // --- Internes ---
-
-  private extraireData(res: ApiResponse<AuthData>): AuthData {
-    if (res.success) {
-      return res.data;
-    }
-    const err = res as ApiError;
-    throw new AuthApiError(err.type_error, err.message, 400);
-  }
-
-  private stockerSession(data: AuthData): void {
-    localStorage.setItem(TOKEN_KEY, data.token);
-    localStorage.setItem(USER_KEY, JSON.stringify(data.utilisateur));
-    this.utilisateurSig.set(data.utilisateur);
-  }
-
-  private lireUtilisateurStocke(): Utilisateur | null {
-    try {
-      const raw = localStorage.getItem(USER_KEY);
-      return raw ? (JSON.parse(raw) as Utilisateur) : null;
-    } catch {
-      return null;
-    }
-  }
-
-  private gererErreur(err: HttpErrorResponse): Observable<never> {
-    const body = err.error as ApiError | undefined;
-
-    if (body && body.type_error && body.message) {
-      return throwError(() => new AuthApiError(body.type_error, body.message, err.status));
-    }
-
-    const message =
-      err.status === 0
-        ? "Impossible de contacter le serveur. Vérifiez votre connexion."
-        : 'Une erreur inattendue est survenue. Réessayez.';
-
-    return throwError(() => new AuthApiError('network-error', message, err.status));
-  }
+ private readonly http = inject(HttpClient);
+ private readonly router = inject(Router);
+ private readonly baseUrl = 'http://localhost:3000/auth';
+ // Signal : valeur réactive qui notifie les composants quand elle change
+ // On les verra en détail dans le cours suivant — ici on les utilise simplement
+ private readonly _user = signal<User |
+null>(this.lireUserDuStorage());
+ // computed : valeur dérivée du signal _user
+ readonly user = this._user.asReadonly();
+ readonly estConnecte = computed(() => this._user() !== null);
+ readonly estAdmin = computed(() => this._user()?.role === 'admin');
+ // Lire l'utilisateur stocké au démarrage de l'app
+ private lireUserDuStorage(): User | null {
+ const str = localStorage.getItem('user');
+ if (!str) return null;
+ try { return JSON.parse(str) as User; }
+ catch { return null; }
+ }
+ // Se connecter — appelle POST /auth/login
+ login(email: string, motDePasse: string):
+Observable<ApiResponse<AuthData>> {
+ return this.http.post<ApiResponse<AuthData>>(
+ `${this.baseUrl}/login`,
+ { email, mot_de_passe: motDePasse },
+ ).pipe(
+ tap(reponse => {
+ // Stocker le token et l'utilisateur
+ localStorage.setItem('token', reponse.data.token);
+ localStorage.setItem('user', JSON.stringify(reponse.data.user));
+ // Mettre à jour le signal
+ this._user.set(reponse.data.user);
+ }),
+ );
+ }
+ // S'inscrire — appelle POST /auth/register
+ register(nom: string, email: string, motDePasse: string):
+Observable<ApiResponse<User>> {
+ const payload: RegisterPayload = { nom, email, mot_de_passe:
+motDePasse };
+ return this.http.post<ApiResponse<User>>(`${this.baseUrl}/register`,
+payload);
+ }
+// Se déconnecter — nettoyer localStorage et rediriger
+ logout(): void {
+ localStorage.removeItem('token');
+ localStorage.removeItem('user');
+ this._user.set(null);
+ this.router.navigate(['/login']);
+ }
+ // Lire le token pour les requêtes HTTP
+ getToken(): string | null {
+ return localStorage.getItem('token');
+ }
 }
