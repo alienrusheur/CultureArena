@@ -7,7 +7,7 @@ export interface Utilisateur {
 }
 
 export interface AuthData {
-  utilisateur: Utilisateur;
+  user: Utilisateur;
   token: string;
 }
 
