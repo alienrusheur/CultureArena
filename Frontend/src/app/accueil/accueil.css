@@ -51,7 +51,7 @@ main {
 }
 
 .username {
-    color: #FFC93C;
+    color: #F9ED22;
 }
 
 .accueil p {
@@ -90,7 +90,7 @@ main {
 }
 
 .icone-titre {
-    color: #FFC93C;
+    color: #F9ED22;
 }
 
 .liste-horizontale {
@@ -102,7 +102,7 @@ main {
 
 .carte-quiz {
     flex: 0 0 130px;
-    background-color: #FFC93C;
+    background-color: #F9ED22;
     border-radius: 16px;
     overflow: hidden;
     color: #16213B;
@@ -150,6 +150,8 @@ main {
 
 .carte-jour {
     border-radius: 16px;
+    width: 286px;
+    margin: 0 auto;
     overflow: hidden;
     cursor: pointer;
     color: #16213B;

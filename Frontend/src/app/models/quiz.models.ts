@@ -17,6 +17,7 @@ export interface Quiz {
   nomQuiz: string;
   createurId: string;
   description: string;
+  image: string;
   favoris: boolean;
   niveau: number;
   nombreDeParticipation: number;

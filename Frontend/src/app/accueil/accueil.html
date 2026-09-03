@@ -32,7 +32,7 @@
 
       <div class="liste-horizontale">
         <mat-card class="carte-quiz" *ngFor="let quiz of tesQuiz">
-          <div class="carte-quiz-image" [style.background-image]="'url(/image/imagePlanete.png)'"></div>
+          <div class="carte-quiz-image" [style.background-image]="'url(' + quiz.image + ')'"></div>
           <div class="carte-quiz-contenu">
             <p class="carte-quiz-titre">{{ quiz.nomQuiz }}</p>
             <p class="carte-quiz-sous-titre">{{ quiz.pointActuel.max }} questions</p>
