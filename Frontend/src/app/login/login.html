@@ -12,20 +12,37 @@
             <button type="button" class="connexion" routerLink="/login">Connexion</button>
             <button type="button" class="Inscription" routerLink="/register">Inscription</button>
         </div>
-        <form id="authForm" onsubmit="handleSubmit(event)">
+        <form #loginForm="ngForm" (ngSubmit)="onSubmit(loginForm)">
 
-            <input type="email" id="email" class="input-email" placeholder="Mail ou pseudonyme" required>
+            <input
+                type="email"
+                id="email"
+                name="email"
+                class="input-email"
+                placeholder="Adresse mail"
+                [(ngModel)]="credentials.email"
+                required>
 
-            <input type="password" id="motDePasse" class="input-password" placeholder="Mot de passe" required>
+            <input
+                [type]="showPassword ? 'text' : 'password'"
+                id="motDePasse"
+                name="motDePasse"
+                class="input-password"
+                placeholder="Mot de passe"
+                [(ngModel)]="credentials.motDePasse"
+                required
+                minlength="8">
             <p class="hint" id="hint" style="display:none;">8 caractères minimum</p>
 
-            <div class="error" id="errorBox"></div>
+            <div class="error" id="errorBox" *ngIf="errorMessage">{{ errorMessage }}</div>
 
             <div class="forgot" id="forgotRow">
-                <a href="#">Mot de passe oublié ?</a>
+                <a href="#" (click)="forgotPassword($event)">Mot de passe oublié ?</a>
             </div>
 
-            <button type="submit" class="submit" id="submitBtn">Se connecter</button>
+            <button type="submit" class="submit" id="submitBtn" [disabled]="isLoading">
+                {{ isLoading ? 'Connexion...' : 'Se connecter' }}
+            </button>
 
         </form>
         <div class="autremoyen">
@@ -35,8 +52,8 @@
         </div>
 
         <div class="ConexionReseau">
-            <button type="button"><img src="/image/Logo Google.png" alt="LogoGoogle">Google</button>
-            <button type="button"><img src="/image/Logo Facebook.png" alt="LogoFacebook">Facebook</button>
+            <button type="button" (click)="loginWith('google')"><img src="/image/Logo Google.png" alt="LogoGoogle">Google</button>
+            <button type="button" (click)="loginWith('facebook')"><img src="/image/Logo Facebook.png" alt="LogoFacebook">Facebook</button>
         </div>
 
         <p class="pasdecompte">Pas de compte ? <a routerLink="/register">Inscris-toi !</a></p>

@@ -14,26 +14,29 @@
             <button class="Inscription" routerLink="/register" routerLinkActive="active">Inscription</button>
         </div>
 
-        <form id="authForm" onsubmit="handleSubmit(event)">
+        <form id="authForm" [formGroup]="registerForm" (ngSubmit)="onSubmit()">
 
-            <input type="text" id="pseudonyme" class="input-text" placeholder="Pseudonyme" required>
+            <input type="text" id="pseudonyme" formControlName="pseudonyme" class="input-text" placeholder="Pseudonyme">
 
-            <input type="email" id="email" class="input-email" placeholder="Adresse mail" required>
+            <input type="email" id="email" formControlName="email" class="input-email" placeholder="Adresse mail">
 
-            <input type="password" id="motDePasse" class="input-password" placeholder="Mot de passe" required>
-            <p class="hint" id="hint" style="display:none;">8 caractères minimum</p>
+            <input [type]="afficherMdp ? 'text' : 'password'" id="motDePasse" formControlName="motDePasse" class="input-password" placeholder="Mot de passe">
+            <p class="hint" id="hint" *ngIf="motDePasse.touched && motDePasse.invalid">8 caractères minimum</p>
 
-            <input type="password" id="confirmMotDePasse" class="input-password" placeholder="Confirmer le mot de passe"
-                required>
-            <p class="hint" id="confirmHint" style="display:none;">Les mots de passe doivent correspondre</p>
+            <input [type]="afficherConfirm ? 'text' : 'password'" id="confirmMotDePasse" formControlName="confirmation" class="input-password" placeholder="Confirmer le mot de passe">
+            <p class="hint" id="confirmHint" *ngIf="registerForm.errors?.['motsDePasseIdentiques'] && confirmation.touched">
+                Les mots de passe doivent correspondre
+            </p>
 
-            <div class="error" id="errorBox"></div>
+            <div class="error" id="errorBox" *ngIf="erreur">{{ erreur }}</div>
 
             <div class="forgot" id="forgotRow">
                 <a href="#">Mot de passe oublié ?</a>
             </div>
 
-            <button type="submit" class="submit" id="submitBtn">S'inscrire</button>
+            <button type="submit" class="submit" id="submitBtn" [disabled]="registerForm.invalid || chargement">
+                {{ chargement ? 'Inscription...' : "S'inscrire" }}
+            </button>
 
         </form>
 

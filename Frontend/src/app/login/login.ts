@@ -7,7 +7,7 @@ import { AuthService } from '../services/auth.service';
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterLink, RouterLinkActive, Router],
+  imports: [CommonModule, FormsModule, RouterLink, RouterLinkActive],
   templateUrl: './login.html',
   styleUrl: './login.css'
 })
@@ -47,7 +47,7 @@ export class LoginComponent {
       this.isLoading = false;
 
       if (data.success) {
-        console.log('Connecté :', data.data.user);
+        console.log('Connecté :', data.data.utilisateur);
         console.log('Token :', data.data.token);
 
         this.router.navigateByUrl('/accueil');

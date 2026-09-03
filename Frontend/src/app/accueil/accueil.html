@@ -1,1 +1,103 @@
-<p>accueil works!</p>
+<div class="Pagedeconnexion">
+
+  <mat-toolbar color="primary">
+    <button mat-icon-button aria-label="Menu">
+      <mat-icon>menu</mat-icon>
+    </button>
+
+    <span class="toolbar-spacer"></span>
+
+    <span class="toolbar-title">CultureArena</span>
+
+    <span class="toolbar-spacer"></span>
+
+    <button mat-icon-button aria-label="Profil">
+      <img src="/image/Photo de profile.png" alt="Photo de profil" class="avatar">
+    </button>
+  </mat-toolbar>
+
+  <main>
+    <div class="accueil">
+      <h1>Bonjour ! <span class="username">{{ nomUtilisateur }}</span></h1>
+      <p>Rechercher un theme de votre choix</p>
+
+      <mat-form-field appearance="outline" class="champ-recherche">
+        <input matInput type="text" class="input-recherche" placeholder="Rechercher" name="recherche"
+          [(ngModel)]="credentials.recherche" required>
+      </mat-form-field>
+    </div>
+
+    <section class="section-quiz">
+      <h2><mat-icon class="icone-titre">person</mat-icon> Tes quiz</h2>
+
+      <div class="liste-horizontale">
+        <mat-card class="carte-quiz" *ngFor="let quiz of tesQuiz">
+          <div class="carte-quiz-image" [style.background-image]="'url(/image/imagePlanete.png)'"></div>
+          <div class="carte-quiz-contenu">
+            <p class="carte-quiz-titre">{{ quiz.nomQuiz }}</p>
+            <p class="carte-quiz-sous-titre">{{ quiz.pointActuel.max }} questions</p>
+            <div class="carte-quiz-actions">
+              <button mat-icon-button (click)="modifierQuiz(quiz)" aria-label="Modifier">
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button mat-icon-button (click)="supprimerQuiz(quiz)" aria-label="Supprimer">
+                <mat-icon>close</mat-icon>
+              </button>
+            </div>
+          </div>
+        </mat-card>
+      </div>
+    </section>
+
+    <section class="section-quiz">
+
+      <h2>
+        <mat-icon class="icone-titre">wb_sunny</mat-icon>
+        Quizz du jour
+      </h2>
+
+      @if (quizDuJour) {
+      <mat-card class="carte-jour" (click)="lancerQuizDuJour()">
+
+        <div class="carte-jour-image" [style.background-image]="'url(/image/lol.jpeg)'"></div>
+
+        <mat-card-content>
+
+          <p class="carte-jour-titre">
+            {{ quizDuJour.nomQuiz }}
+          </p>
+
+          <p class="carte-jour-sous-titre">
+            {{ quizDuJour.questions.length }} questions
+            |
+            {{ quizDuJour.nombreDeJoueurs }} joueurs actifs
+          </p>
+
+        </mat-card-content>
+
+      </mat-card>
+      }
+
+    </section>
+  </main>
+
+  <nav class="nav-bas">
+    <a class="nav-item active">
+      <mat-icon>home</mat-icon>
+      <span>Accueil</span>
+    </a>
+    <a class="nav-item">
+      <mat-icon>help_outline</mat-icon>
+      <span>Quizz</span>
+    </a>
+    <a class="nav-item">
+      <mat-icon>bar_chart</mat-icon>
+      <span>Ranking</span>
+    </a>
+    <a class="nav-item">
+      <img src="/image/shop.png" alt="Shop" class="nav-icon-img">
+      <span>Shop</span>
+    </a>
+  </nav>
+
+</div>
