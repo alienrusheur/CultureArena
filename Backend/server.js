@@ -21,7 +21,7 @@ app.use(express.json());
 app.use(morgan('dev'));
 
 app.use('/auth', authRoutes);
-app.use('/utilisateurs', utilisateurRoutes);
+app.use('/user', utilisateurRoutes);
 app.use('/categories', categorieRoutes);
 app.use('/quizzes', quizRoutes);
 app.use('/boutique', boutiqueRoutes);

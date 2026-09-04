@@ -20,10 +20,17 @@ const quizSchema = new mongoose.Schema(
       required: true,
     },
     description: { type: String, required: true, trim: true },
+
+    image: { 
+      type: String, 
+      default: '/image/imagePlanete.png' 
+    },
+
     favoris: { type: Boolean, default: false },
     niveau: { type: Number, default: 1, min: 1 },
     nombreDeParticipation: { type: Number, default: 0, min: 0 },
     nombreDeJoueurs: { type: Number, default: 0, min: 0 },
+    NombreQuestions: { type: Number, default: 0, min: 0 },
     pointActuel: {
       actuel: { type: Number, default: 0, min: 0 },
       max: { type: Number, default: 0, min: 0 },
