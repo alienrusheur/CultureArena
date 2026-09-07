@@ -1,0 +1,35 @@
+@import url('https://fonts.googleapis.com/css2?family=Happy+Monkey&display=swap');
+
+* {
+    box-sizing: border-box;
+}
+
+.Pagedegame {
+    width: 100%;
+    max-width: 420px;
+    min-height: 100vh;
+    margin: 0 auto;
+    background-color: #2563EB;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    color: #fff;
+    text-align: center;
+    font-family: 'Happy Monkey', sans-serif;
+    padding: 0 10px;
+}
+
+.LogoApp {
+    margin-top: 30px;
+}
+
+.Chronometre img {
+    width: 25%;
+    height: auto;
+}
+
+.entete {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}

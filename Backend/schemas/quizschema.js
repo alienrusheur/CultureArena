@@ -3,8 +3,11 @@ const mongoose = require('mongoose');
 const questionSchema = new mongoose.Schema(
   {
     enonce: { type: String, required: true, trim: true },
+    optionA: { type: String, required: true, trim: true },
+    optionB: { type: String, required: true, trim: true },
+    optionC: { type: String, required: true, trim: true },
+    optionD: { type: String, required: true, trim: true },
     reponse: { type: String, required: true, trim: true },
-    estCorrecte: { type: Boolean, default: true },
     points: { type: Number, default: 0, min: 0 },
     piecesGagnees: { type: Number, default: 0, min: 0 },
   },
@@ -30,7 +33,7 @@ const quizSchema = new mongoose.Schema(
     niveau: { type: Number, default: 1, min: 1 },
     nombreDeParticipation: { type: Number, default: 0, min: 0 },
     nombreDeJoueurs: { type: Number, default: 0, min: 0 },
-    NombreQuestions: { type: Number, default: 0, min: 0 },
+    nombreQuestions: { type: Number, default: 0, min: 0 },
     pointActuel: {
       actuel: { type: Number, default: 0, min: 0 },
       max: { type: Number, default: 0, min: 0 },
@@ -45,5 +48,9 @@ const quizSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
+
+quizSchema.pre('save', function (next) {
+  this.nombreQuestions = this.questions.length;
+});
 
 module.exports = mongoose.model('Quiz', quizSchema);

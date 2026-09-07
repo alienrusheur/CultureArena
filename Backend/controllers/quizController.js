@@ -2,6 +2,7 @@ const { success, error } = require('../utils/reponse');
 const quizService = require('../services/quizService');
 
 function handleErreur(res, err, messageParDefaut) {
+  console.error('Erreur détaillée :', err); 
   if (err.status) {
     return error(res, err.message, err.status, err.type);
   }

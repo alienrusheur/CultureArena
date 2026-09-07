@@ -1,12 +1,17 @@
 export interface Question {
   _id?: string;
   enonce: string;
+  image?: string;
+
+  optionA: string;
+  optionB: string;
+  optionC: string;
+  optionD: string;
+
   reponse: string;
-  estCorrecte?: boolean;
   points?: number;
   piecesGagnees?: number;
 }
-
 export interface PointActuel {
   actuel: number;
   max: number;
@@ -22,6 +27,7 @@ export interface Quiz {
   niveau: number;
   nombreDeParticipation: number;
   nombreDeJoueurs: number;
+  nombreQuestions: number;
   pointActuel: PointActuel;
   questions: Question[];
   createdAt?: string;
@@ -31,6 +37,7 @@ export interface Quiz {
 export interface CreerQuizPayload {
   nomQuiz: string;
   description: string;
+  image?: string;
   favoris?: boolean;
   niveau?: number;
   questions: Question[];

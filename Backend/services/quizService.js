@@ -61,13 +61,23 @@ async function create(
     );
   }
 
-  const questionInvalide = questions.find(
-    q => !q.enonce || !q.reponse
+  const questionInvalide = questions.find((q) =>
+    !q.enonce || !q.optionA || !q.optionB || !q.optionC || !q.optionD || !q.reponse
   );
-
   if (questionInvalide) {
     throw serviceError(
-      'Chaque question doit avoir un enonce et une reponse',
+      'Chaque question doit avoir un enonce, 4 options (A à D) et une reponse',
+      400,
+      'validator'
+    );
+  }
+
+  const reponseIncoherente = questions.find((q) =>
+    ![q.optionA, q.optionB, q.optionC, q.optionD].includes(q.reponse)
+  );
+  if (reponseIncoherente) {
+    throw serviceError(
+      'La reponse doit correspondre exactement à l\'une des options A, B, C ou D',
       400,
       'validator'
     );
@@ -142,6 +152,10 @@ async function update(id, userId, role, donnees) {
 
   // Le créateur ne peut jamais être modifié
   delete donnees.createurId;
+
+  if (Array.isArray(donnees.questions)) {
+    donnees.nombreQuestions = donnees.questions.length;
+  }
 
   try {
 

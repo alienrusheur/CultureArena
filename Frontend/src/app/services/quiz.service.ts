@@ -17,7 +17,7 @@ const API_URL = 'http://localhost:3000/quizzes';
 })
 export class QuizService {
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   getTous(): Observable<Quiz[]> {
     return this.http
@@ -49,6 +49,18 @@ export class QuizService {
           return res.data;
         })
       );
+  }
+
+  getQuizDuJour(): Observable<Quiz | null> {
+    return this.getTous().pipe(
+      map((quizzes) => {
+        if (quizzes.length === 0) return null;
+        // Le plus populaire = le quiz du jour
+        return quizzes.reduce((leaderActuel, quizCourant) =>
+          quizCourant.nombreDeJoueurs > leaderActuel.nombreDeJoueurs ? quizCourant : leaderActuel
+        );
+      })
+    );
   }
 
   creer(payload: CreerQuizPayload): Observable<Quiz> {
@@ -95,4 +107,25 @@ export class QuizService {
         })
       );
   }
+
+  soumettreReponses(
+  quizId: string,
+  reponses: string[]
+): Observable<any> {
+
+  return this.http
+    .post<ApiResponse<any>>(
+      `${API_URL}/${quizId}/soumettre`,
+      { reponses }
+    )
+    .pipe(
+      map(res => {
+        if (!res.success) {
+          throw new Error(res.message);
+        }
+
+        return res.data;
+      })
+    );
+}
 }

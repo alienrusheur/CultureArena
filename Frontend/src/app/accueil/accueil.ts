@@ -50,7 +50,7 @@ export class AccueilComponent implements OnInit {
         console.log('NOMBRE DE QUIZ :', quiz.length);
 
         this.tesQuiz = quiz;
-        this.quizDuJour = quiz.length > 0 ? quiz[0] : null;
+        this.quizDuJour = quiz.length > 0 ? quiz[quiz.length - 1] : null;
       },
 
       error: (err: any) => {
@@ -84,6 +84,7 @@ export class AccueilComponent implements OnInit {
   }
 
   lancerQuizDuJour(): void {
-    console.log('Lancer le quiz du jour');
+    if (!this.quizDuJour) return;
+    console.log('Lancer', this.quizDuJour.nomQuiz);
   }
 }

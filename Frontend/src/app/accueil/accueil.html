@@ -35,7 +35,7 @@
           <div class="carte-quiz-image" [style.background-image]="'url(' + quiz.image + ')'"></div>
           <div class="carte-quiz-contenu">
             <p class="carte-quiz-titre">{{ quiz.nomQuiz }}</p>
-            <p class="carte-quiz-sous-titre">{{ quiz.pointActuel.max }} questions</p>
+            <p class="carte-quiz-sous-titre">{{ quiz.nombreQuestions }} questions</p>
             <div class="carte-quiz-actions">
               <button mat-icon-button (click)="modifierQuiz(quiz)" aria-label="Modifier">
                 <mat-icon>edit</mat-icon>
@@ -67,11 +67,7 @@
             {{ quizDuJour.nomQuiz }}
           </p>
 
-          <p class="carte-jour-sous-titre">
-            {{ quizDuJour.questions.length }} questions
-            |
-            {{ quizDuJour.nombreDeJoueurs }} joueurs actifs
-          </p>
+          <p class="carte-jour-sous-titre">{{ quizDuJour.nombreQuestions }} questions</p>
 
         </mat-card-content>
 
@@ -83,19 +79,19 @@
 
   <nav class="nav-bas">
     <a class="nav-item active">
-      <mat-icon>home</mat-icon>
+      <img src="/image/Accueil.png" alt="Accueil" class="nav-icon-img">
       <span>Accueil</span>
     </a>
     <a class="nav-item">
-      <mat-icon>help_outline</mat-icon>
+      <img src="/image/Qizz.png" alt="Quizz" class="nav-icon-img">
       <span>Quizz</span>
     </a>
     <a class="nav-item">
-      <mat-icon>bar_chart</mat-icon>
+     <img src="/image/Classement.png" alt="Ranking" class="nav-icon-img">
       <span>Ranking</span>
     </a>
     <a class="nav-item">
-      <img src="/image/shop.png" alt="Shop" class="nav-icon-img">
+      <img src="/image/Shop.png" alt="Shop" class="nav-icon-img">
       <span>Shop</span>
     </a>
   </nav>

@@ -1,0 +1,36 @@
+<div class="Pagedegame">
+  <div class="entete">
+    <div class="LogoApp">
+      <img src="/image/LogoCultureArenaEnBlanc.png" alt="Logo">
+    </div>
+    <div class="MenuInGame">
+      <img src="/image/Menu3PointIngame.png" alt="MenuInGame">
+    </div>
+  </div>
+
+  <div class="numeroQuestion">
+    <p>Question {{ currentQuestionIndex + 1 }}/{{ totalQuestions }}</p>
+  </div>
+
+  <div class="imageDeLaQuestion">
+  <img
+    [src]="currentQuestion?.image"
+    alt="Question"
+  >
+</div>
+
+  <div class="Chronometre">
+    <img src="/image/chronometre.png" alt="Chronometre">
+  </div>
+
+  <div class="Question">
+    <p>{{ currentQuestion?.enonce }}</p>
+  </div>
+
+  <div class="Reponse">
+    <button type="button" (click)="submitAnswer('A')">{{ currentQuestion?.optionA }}</button>
+    <button type="button" (click)="submitAnswer('B')">{{ currentQuestion?.optionB }}</button>
+    <button type="button" (click)="submitAnswer('C')">{{ currentQuestion?.optionC }}</button>
+    <button type="button" (click)="submitAnswer('D')">{{ currentQuestion?.optionD }}</button>
+  </div>
+</div>
