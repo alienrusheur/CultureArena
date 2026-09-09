@@ -273,11 +273,33 @@ async function corriger(
   };
 }
 
+async function definirQuizDuJour(id, userId, role) {
+  if (!estIdValide(id)) {
+    throw serviceError('Identifiant de quiz invalide', 400, 'validator');
+  }
+
+  const quiz = await Quiz.findById(id);
+  if (!quiz) {
+    throw serviceError('Quiz non trouvé', 404, 'not-found');
+  }
+
+  if (role !== 'admin') {
+    throw serviceError('Seul un administrateur peut définir le quiz du jour', 403, 'forbidden');
+  }
+
+  await Quiz.updateMany({ estQuizDuJour: true }, { $set: { estQuizDuJour: false } });
+  quiz.estQuizDuJour = true;
+  await quiz.save();
+
+  return quiz;
+}
+
 module.exports = {
   getAll,
   getById,
   create,
   update,
   remove,
-  corriger
+  corriger,
+  definirQuizDuJour
 };

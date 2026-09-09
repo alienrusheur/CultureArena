@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const questionSchema = new mongoose.Schema(
   {
     enonce: { type: String, required: true, trim: true },
+    image: { type: String},
     optionA: { type: String, required: true, trim: true },
     optionB: { type: String, required: true, trim: true },
     optionC: { type: String, required: true, trim: true },
@@ -34,6 +35,7 @@ const quizSchema = new mongoose.Schema(
     nombreDeParticipation: { type: Number, default: 0, min: 0 },
     nombreDeJoueurs: { type: Number, default: 0, min: 0 },
     nombreQuestions: { type: Number, default: 0, min: 0 },
+    estQuizDuJour: { type: Boolean, default: false },
     pointActuel: {
       actuel: { type: Number, default: 0, min: 0 },
       max: { type: Number, default: 0, min: 0 },

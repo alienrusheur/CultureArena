@@ -46,7 +46,7 @@ async function update(req, res) {
 }
 
 async function remove(req, res) {
-  try {
+  try {aa
     const quizSupprime = await quizService.remove(req.params.id, req.user.id, req.user.role);
     return success(res, quizSupprime, 200);
   } catch (err) {
@@ -54,4 +54,13 @@ async function remove(req, res) {
   }
 }
 
-module.exports = { getAll, getById, create, update, remove };
+async function definirQuizDuJour(req, res) {
+  try {
+    const quiz = await quizService.definirQuizDuJour(req.params.id, req.user.id, req.user.role);
+    return success(res, quiz, 200);
+  } catch (err) {
+    return handleErreur(res, err, 'Erreur lors de la définition du quiz du jour');
+  }
+}
+
+module.exports = { getAll, getById, create, update, remove, definirQuizDuJour };
