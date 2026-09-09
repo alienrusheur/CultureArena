@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Quiz, Question } from '../models/quiz.models';
@@ -19,16 +19,30 @@ export class QuizPlayComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private quizService: QuizService
+    private quizService: QuizService,
+    private cdr: ChangeDetectorRef
   ) { }
 
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
+
     if (!id) return;
 
     this.quizService.getParId(id).subscribe({
-      next: (quiz) => this.quiz = quiz,
-      error: (err) => console.error('Erreur chargement quiz', err)
+      next: (quiz) => {
+        console.log('QUIZ REÇU PAR ANGULAR :', quiz);
+        console.log('QUESTIONS :', quiz.questions);
+        console.log('NOMBRE DE QUESTIONS :', quiz.questions?.length);
+
+        this.quiz = quiz;
+
+        // Force Angular à mettre à jour l'affichage
+        this.cdr.detectChanges();
+      },
+
+      error: (err) => {
+        console.error('Erreur chargement quiz', err);
+      }
     });
   }
 
@@ -82,4 +96,16 @@ export class QuizPlayComponent implements OnInit {
       });
 
   }
+
+  imageChargee(event: Event): void {
+    const img = event.target as HTMLImageElement;
+    console.log('IMAGE CHARGÉE :', img.src);
+  }
+
+  imageErreur(event: Event): void {
+    const img = event.target as HTMLImageElement;
+    console.error('ERREUR IMAGE :', img.src);
+  }
+
+
 }

@@ -1,0 +1,31 @@
+<div class="liste-quiz">
+
+  <h1>Les quiz</h1>
+
+  <div class="quiz-container">
+
+    <div
+      class="quiz-card"
+      *ngFor="let quiz of quizs"
+    >
+
+      <h2>{{ quiz.nomQuiz }}</h2>
+
+      <p>{{ quiz.description }}</p>
+
+      <p>
+        {{ quiz.questions.length }} questions
+      </p>
+
+      <button
+        type="button"
+        (click)="jouerQuiz(quiz._id)"
+      >
+        Jouer
+      </button>
+
+    </div>
+
+  </div>
+
+</div>

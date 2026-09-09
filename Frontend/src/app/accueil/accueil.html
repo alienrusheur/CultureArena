@@ -31,18 +31,25 @@
       <h2><mat-icon class="icone-titre">person</mat-icon> Tes quiz</h2>
 
       <div class="liste-horizontale">
-        <mat-card class="carte-quiz" *ngFor="let quiz of tesQuiz">
+        <mat-card class="carte-quiz" *ngFor="let quiz of tesQuiz()">
           <div class="carte-quiz-image" [style.background-image]="'url(' + quiz.image + ')'"></div>
           <div class="carte-quiz-contenu">
             <p class="carte-quiz-titre">{{ quiz.nomQuiz }}</p>
             <p class="carte-quiz-sous-titre">{{ quiz.nombreQuestions }} questions</p>
             <div class="carte-quiz-actions">
+
+              <button mat-icon-button (click)="lancerQuiz(quiz)" aria-label="Jouer">
+                <mat-icon>play_arrow</mat-icon>
+              </button>
+
               <button mat-icon-button (click)="modifierQuiz(quiz)" aria-label="Modifier">
                 <mat-icon>edit</mat-icon>
               </button>
+
               <button mat-icon-button (click)="supprimerQuiz(quiz)" aria-label="Supprimer">
                 <mat-icon>close</mat-icon>
               </button>
+
             </div>
           </div>
         </mat-card>
@@ -53,10 +60,10 @@
 
       <h2>
         <mat-icon class="icone-titre">wb_sunny</mat-icon>
-        Quizz du jour
+        Quiz du jour
       </h2>
 
-      @if (quizDuJour) {
+      @if (quizDuJour()) {
       <mat-card class="carte-jour" (click)="lancerQuizDuJour()">
 
         <div class="carte-jour-image" [style.background-image]="'url(/image/lol.jpeg)'"></div>
@@ -64,10 +71,10 @@
         <mat-card-content>
 
           <p class="carte-jour-titre">
-            {{ quizDuJour.nomQuiz }}
+            {{ quizDuJour()!.nomQuiz }}
           </p>
 
-          <p class="carte-jour-sous-titre">{{ quizDuJour.nombreQuestions }} questions</p>
+          <p class="carte-jour-sous-titre">{{ quizDuJour()!.nombreQuestions }} questions</p>
 
         </mat-card-content>
 
@@ -87,7 +94,7 @@
       <span>Quizz</span>
     </a>
     <a class="nav-item">
-     <img src="/image/Classement.png" alt="Ranking" class="nav-icon-img">
+      <img src="/image/Classement.png" alt="Ranking" class="nav-icon-img">
       <span>Ranking</span>
     </a>
     <a class="nav-item">

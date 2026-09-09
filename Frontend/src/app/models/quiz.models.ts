@@ -28,6 +28,7 @@ export interface Quiz {
   nombreDeParticipation: number;
   nombreDeJoueurs: number;
   nombreQuestions: number;
+  estQuizDuJour: boolean;
   pointActuel: PointActuel;
   questions: Question[];
   createdAt?: string;

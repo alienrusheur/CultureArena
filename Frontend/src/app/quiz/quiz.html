@@ -12,16 +12,16 @@
     <p>Question {{ currentQuestionIndex + 1 }}/{{ totalQuestions }}</p>
   </div>
 
+  @if (currentQuestion) {
   <div class="imageDeLaQuestion">
-  <img
-    [src]="currentQuestion?.image"
-    alt="Question"
-  >
-</div>
-
-  <div class="Chronometre">
-    <img src="/image/chronometre.png" alt="Chronometre">
+    <img
+      [src]="currentQuestion.image"
+      [alt]="currentQuestion.enonce"
+      (load)="imageChargee($event)"
+      (error)="imageErreur($event)"
+    >
   </div>
+}
 
   <div class="Question">
     <p>{{ currentQuestion?.enonce }}</p>

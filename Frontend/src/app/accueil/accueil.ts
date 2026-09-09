@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
@@ -16,75 +17,54 @@ import { QuizService } from '../services/quiz.service';
   selector: 'app-accueil',
   standalone: true,
   imports: [
-    CommonModule,
-    FormsModule,
-    MatToolbarModule,
-    MatIconModule,
-    MatButtonModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatCardModule
+    CommonModule, FormsModule,
+    MatToolbarModule, MatIconModule, MatButtonModule,
+    MatFormFieldModule, MatInputModule, MatCardModule
   ],
   templateUrl: './accueil.html',
   styleUrl: './accueil.css'
 })
-
 export class AccueilComponent implements OnInit {
-
-  credentials = {
-    recherche: ''
-  };
-
+  credentials = { recherche: '' };
   nomUtilisateur = 'Rayane';
 
-  tesQuiz: Quiz[] = [];
+  tesQuiz = signal<Quiz[]>([]);
+  quizDuJour = signal<Quiz | null>(null);
 
-  quizDuJour: Quiz | null = null;
-
-  constructor(private quizService: QuizService) { }
+  constructor(private quizService: QuizService, private router: Router) { }
 
   ngOnInit(): void {
     this.quizService.getTous().subscribe({
       next: (quiz: Quiz[]) => {
-        console.log('QUIZ RECUS PAR ANGULAR :', quiz);
-        console.log('NOMBRE DE QUIZ :', quiz.length);
-
-        this.tesQuiz = quiz;
-        this.quizDuJour = quiz.length > 0 ? quiz[quiz.length - 1] : null;
+        this.tesQuiz.set(quiz);
+        this.quizDuJour.set(quiz.find(q => q.estQuizDuJour) ?? null);
       },
-
-      error: (err: any) => {
-        console.error('STATUS :', err.status);
-        console.error('MESSAGE :', err.message);
-        console.error('URL :', err.url);
-        console.error('ERROR :', err.error);
-      }
+      error: (err: any) => console.error('Erreur chargement quiz', err)
     });
   }
 
   supprimerQuiz(quiz: Quiz): void {
-
-    console.log('Supprimer', quiz.nomQuiz);
-
     this.quizService.supprimer(quiz._id).subscribe({
       next: () => {
-        this.tesQuiz = this.tesQuiz.filter(
-          q => q._id !== quiz._id
-        );
+        this.tesQuiz.update(liste => liste.filter(q => q._id !== quiz._id));
       },
-      error: (err: Error) => {
-        console.error('Erreur suppression quiz', err);
-      }
+      error: (err: Error) => console.error('Erreur suppression quiz', err)
     });
-
   }
 
   modifierQuiz(quiz: Quiz): void {
-    console.log('Modifier', quiz.nomQuiz);
+    this.router.navigateByUrl(`/quiz/${quiz._id}/modifier`);
+  }
+
+  lancerQuiz(quiz: Quiz): void {
+    this.router.navigate(['/quiz', quiz._id]);
   }
 
   lancerQuizDuJour(): void {
-    if (!this.quizDuJour) return;
-    console.log('Lancer', this.quizDuJour.nomQuiz);
+    const quiz = this.quizDuJour();
+
+    if (!quiz) return;
+
+    this.router.navigate(['/quiz', quiz._id]);
   }
 }

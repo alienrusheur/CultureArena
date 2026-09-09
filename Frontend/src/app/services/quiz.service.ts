@@ -77,6 +77,17 @@ export class QuizService {
       );
   }
 
+  definirQuizDuJour(id: string): Observable<Quiz> {
+    return this.http
+      .put<ApiResponse<Quiz>>(`${API_URL}/${id}/quiz-du-jour`, {})
+      .pipe(
+        map(res => {
+          if (!res.success) throw new Error(res.message);
+          return res.data;
+        })
+      );
+  }
+
   modifier(
     id: string,
     payload: ModifierQuizPayload
@@ -106,26 +117,28 @@ export class QuizService {
           return res.data;
         })
       );
+
+
   }
 
   soumettreReponses(
-  quizId: string,
-  reponses: string[]
-): Observable<any> {
+    quizId: string,
+    reponses: string[]
+  ): Observable<any> {
 
-  return this.http
-    .post<ApiResponse<any>>(
-      `${API_URL}/${quizId}/soumettre`,
-      { reponses }
-    )
-    .pipe(
-      map(res => {
-        if (!res.success) {
-          throw new Error(res.message);
-        }
+    return this.http
+      .post<ApiResponse<any>>(
+        `${API_URL}/${quizId}/soumettre`,
+        { reponses }
+      )
+      .pipe(
+        map(res => {
+          if (!res.success) {
+            throw new Error(res.message);
+          }
 
-        return res.data;
-      })
-    );
-}
+          return res.data;
+        })
+      );
+  }
 }
