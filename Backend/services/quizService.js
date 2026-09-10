@@ -2,6 +2,11 @@ const mongoose = require('mongoose');
 
 const Quiz = require('../schemas/quizschema');
 
+console.log(
+  'IMAGE DANS LE SCHEMA :',
+  Quiz.schema.path('questions').schema.path('image')
+);
+
 function serviceError(message, status, type) {
   const err = new Error(message);
   err.status = status;
@@ -127,58 +132,58 @@ function verifierProprietaire(quiz, userId, role) {
 async function update(id, userId, role, donnees) {
 
   if (!estIdValide(id)) {
-    throw serviceError(
-      'Identifiant de quiz invalide',
-      400,
-      'validator'
-    );
+    throw serviceError('ID de quiz invalide', 400);
   }
 
   const quiz = await Quiz.findById(id);
 
   if (!quiz) {
-    throw serviceError(
-      'Quiz non trouvé',
-      404,
-      'not-found'
-    );
+    throw serviceError('Quiz introuvable', 404);
   }
 
-  verifierProprietaire(
-    quiz,
-    userId,
-    role
-  );
+  verifierProprietaire(quiz, userId, role);
 
-  // Le créateur ne peut jamais être modifié
+  console.log('===== DONNEES RECUES PAR UPDATE =====');
+  console.log(JSON.stringify(donnees, null, 2));
+
+  // Si les données arrivent sous { success, data }
+  // on récupère uniquement le contenu de data
+  if (donnees?.success === true && donnees?.data) {
+    donnees = donnees.data;
+  }
+
+  // On ne doit pas modifier ces champs
+  delete donnees._id;
   delete donnees.createurId;
+  delete donnees.createdAt;
+  delete donnees.updatedAt;
+  delete donnees.__v;
 
+  // Recalcul du nombre de questions
   if (Array.isArray(donnees.questions)) {
     donnees.nombreQuestions = donnees.questions.length;
   }
 
   try {
 
-    const quizMisAJour =
-      await Quiz.findByIdAndUpdate(
-        id,
-        donnees,
-        {
-          new: true,
-          runValidators: true
-        }
-      );
+    const quizMisAJour = await Quiz.findByIdAndUpdate(
+      id,
+      donnees,
+      {
+        new: true,
+        runValidators: true
+      }
+    );
+
+    console.log('===== QUIZ APRÈS MODIFICATION =====');
+    console.log(JSON.stringify(quizMisAJour, null, 2));
 
     return quizMisAJour;
 
   } catch (err) {
 
     if (err.name === 'ValidationError') {
-      throw serviceError(
-        err.message,
-        400,
-        'validator'
-      );
+      throw serviceError(err.message, 400, 'validator');
     }
 
     throw err;
@@ -216,17 +221,10 @@ async function remove(id, userId, role) {
   return quiz;
 }
 
-async function corriger(
-  quizId,
-  reponsesUtilisateur
-) {
-
+async function corriger(quizId, reponsesUtilisateur) {
   const quiz = await getById(quizId);
 
-  if (
-    !Array.isArray(reponsesUtilisateur) ||
-    reponsesUtilisateur.length !== quiz.questions.length
-  ) {
+  if (!Array.isArray(reponsesUtilisateur) || reponsesUtilisateur.length !== quiz.questions.length) {
     throw serviceError(
       `Le tableau de réponses doit contenir exactement ${quiz.questions.length} éléments`,
       400,
@@ -235,40 +233,34 @@ async function corriger(
   }
 
   let bonnesReponses = 0;
+  let pointsGagnes = 0;
+  let piecesGagnees = 0;
 
-  const details = quiz.questions.map(
-    (question, i) => {
+  const details = quiz.questions.map((question, i) => {
+    const reponseDonnee = String(reponsesUtilisateur[i] ?? '').trim().toLowerCase();
+    const reponseAttendue = String(question.reponse).trim().toLowerCase();
+    const correcte = reponseDonnee === reponseAttendue;
 
-      const reponseDonnee =
-        String(
-          reponsesUtilisateur[i] ?? ''
-        )
-          .trim()
-          .toLowerCase();
-
-      const reponseAttendue =
-        String(question.reponse)
-          .trim()
-          .toLowerCase();
-
-      const correcte =
-        reponseDonnee === reponseAttendue;
-
-      if (correcte) {
-        bonnesReponses++;
-      }
-
-      return {
-        enonce: question.enonce,
-        correcte
-      };
+    if (correcte) {
+      bonnesReponses++;
+      pointsGagnes += question.points || 0;
+      piecesGagnees += question.piecesGagnees || 0;
     }
-  );
+
+    return {
+      enonce: question.enonce,
+      correcte,
+      pointsObtenus: correcte ? (question.points || 0) : 0,
+      piecesObtenues: correcte ? (question.piecesGagnees || 0) : 0
+    };
+  });
 
   return {
     quizId: quiz._id,
     totalQuestions: quiz.questions.length,
     bonnesReponses,
+    pointsGagnes,
+    piecesGagnees,
     details
   };
 }
@@ -294,6 +286,29 @@ async function definirQuizDuJour(id, userId, role) {
   return quiz;
 }
 
+async function restaurerImagesQuiz() {
+  const id = '6a9e869552291bc536de121a';
+
+  const quiz = await Quiz.findById(id);
+
+  if (!quiz) {
+    throw new Error('Quiz introuvable');
+  }
+
+  quiz.questions[0].image = '/image/RequinMarteau.png';
+  quiz.questions[1].image = '/image/requin baleine 1.png';
+  quiz.questions[2].image = '/image/bras.png';
+  quiz.questions[3].image = '/image/Smart.png';
+  quiz.questions[4].image = '/image/Tentacule.png';
+
+  await quiz.save();
+
+  console.log('✅ Images restaurées !');
+  console.log(JSON.stringify(quiz, null, 2));
+
+  return quiz;
+}
+
 module.exports = {
   getAll,
   getById,
@@ -301,5 +316,6 @@ module.exports = {
   update,
   remove,
   corriger,
-  definirQuizDuJour
+  definirQuizDuJour,
+  restaurerImagesQuiz
 };

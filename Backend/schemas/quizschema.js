@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const questionSchema = new mongoose.Schema(
   {
     enonce: { type: String, required: true, trim: true },
-    image: { type: String},
+    image: { type: String },
     optionA: { type: String, required: true, trim: true },
     optionB: { type: String, required: true, trim: true },
     optionC: { type: String, required: true, trim: true },
