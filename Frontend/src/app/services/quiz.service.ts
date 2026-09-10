@@ -121,14 +121,14 @@ export class QuizService {
 
   }
 
-  soumettreReponses(
+    terminerQuiz(
     quizId: string,
     reponses: string[]
   ): Observable<any> {
 
     return this.http
       .post<ApiResponse<any>>(
-        `${API_URL}/${quizId}/soumettre`,
+        `${API_URL}/${quizId}/terminer`,
         { reponses }
       )
       .pipe(

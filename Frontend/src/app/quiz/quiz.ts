@@ -75,27 +75,21 @@ export class QuizPlayComponent implements OnInit {
   }
 
   private terminerQuiz(): void {
+  if (!this.quiz) return;
 
-    if (!this.quiz) return;
+  this.quizService.terminerQuiz(this.quiz._id, this.reponsesUtilisateur)
+    .subscribe({
+      next: (resultat) => {
+        console.log('Résultat du quiz :', resultat);
+        console.log('Points gagnés :', resultat.correction.pointsGagnes);
+        console.log('Bonnes réponses :', resultat.correction.bonnesReponses, '/', resultat.correction.totalQuestions);
 
-    this.quizService
-      .soumettreReponses(this.quiz._id, this.reponsesUtilisateur)
-      .subscribe({
-
-        next: (quiz) => {
-          this.quiz = quiz;
-
-          console.log('QUIZ :', quiz);
-          console.log('IMAGE QUESTION 1 :', quiz.questions[0].image);
-        },
-
-        error: (err: any) => {
-          console.error('Erreur soumission quiz', err);
-        }
-
-      });
-
-  }
+      },
+      error: (err: any) => {
+        console.error('Erreur soumission quiz', err);
+      }
+    });
+}
 
   imageChargee(event: Event): void {
     const img = event.target as HTMLImageElement;
