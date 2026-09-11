@@ -80,10 +80,7 @@ export class QuizPlayComponent implements OnInit {
   this.quizService.terminerQuiz(this.quiz._id, this.reponsesUtilisateur)
     .subscribe({
       next: (resultat) => {
-        console.log('Résultat du quiz :', resultat);
-        console.log('Points gagnés :', resultat.correction.pointsGagnes);
-        console.log('Bonnes réponses :', resultat.correction.bonnesReponses, '/', resultat.correction.totalQuestions);
-
+        this.router.navigate(['/quiz/resultat'], { state: { resultat } });
       },
       error: (err: any) => {
         console.error('Erreur soumission quiz', err);

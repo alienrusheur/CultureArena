@@ -52,3 +52,9 @@ export interface ModifierQuizPayload {
   questions?: Question[];
   pointActuel?: PointActuel;
 }
+
+export interface ClassementEntree {
+  userId: string;
+  pseudonyme: string;
+  score: number;
+}

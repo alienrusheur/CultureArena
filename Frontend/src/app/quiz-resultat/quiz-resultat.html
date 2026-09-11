@@ -1,0 +1,57 @@
+<div class="Pagedeconnexion">
+
+  <div class="entete">
+    <div class="logo">
+      <img src="/image/LogoCultureArenaEnBlanc.png" alt="Logo">
+    </div>
+    <button class="menu-btn" aria-label="Menu">⋮</button>
+  </div>
+
+  <h1 class="titre-page">Resultat du quizz</h1>
+
+  <div class="podium" *ngIf="podium.length > 0">
+    <!-- 2eme place -->
+    <div class="podium-carte" *ngIf="podium[1]">
+      <div class="podium-avatar-wrap">
+        <img class="podium-avatar" src="/image/Photo de profile.png" alt="{{ podium[1].pseudonyme }}">
+        <img class="podium-medaille" [src]="medaille(1)" alt="2e place">
+      </div>
+      <p class="podium-nom">{{ podium[1].pseudonyme }}</p>
+      <p class="podium-score">{{ podium[1].score }} points</p>
+    </div>
+    <!-- 1ère place -->
+    <div class="podium-carte podium-carte-premier" *ngIf="podium[0]">
+      <div class="podium-avatar-wrap">
+        <img class="podium-avatar" src="/image/Photo de profile.png" alt="{{ podium[0].pseudonyme }}">
+        <img class="podium-medaille" [src]="medaille(0)" alt="1ere place">
+      </div>
+      <p class="podium-nom">{{ podium[0].pseudonyme }}</p>
+      <p class="podium-score">{{ podium[0].score }} points</p>
+    </div>
+    <!-- 3ème place -->
+    <div class="podium-carte" *ngIf="podium[2]">
+      <div class="podium-avatar-wrap">
+        <img class="podium-avatar" src="/image/Photo de profile.png" alt="{{ podium[2].pseudonyme }}">
+        <img class="podium-medaille" [src]="medaille(2)" alt="3e place">
+      </div>
+      <p class="podium-nom">{{ podium[2].pseudonyme }}</p>
+      <p class="podium-score">{{ podium[2].score }} points</p>
+    </div>
+  </div>
+
+  <h2 class="titre-classement">Classement final</h2>
+
+  <div class="liste-classement">
+    <div class="ligne-classement" *ngFor="let joueur of classement">
+      <img class="ligne-avatar" src="/image/Photo de profile.png" alt="{{ joueur.pseudonyme }}">
+      <span class="ligne-nom">{{ joueur.pseudonyme }}</span>
+      <span class="ligne-score">{{ joueur.score }} points</span>
+    </div>
+  </div>
+
+  <div class="actions">
+    <button class="btn-secondaire" (click)="partagerResultat()">Partager le resultat</button>
+    <button class="btn-secondaire" (click)="retourAccueil()">Revenir à l'accueil</button>
+  </div>
+
+</div>

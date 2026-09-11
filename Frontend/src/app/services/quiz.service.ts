@@ -5,6 +5,7 @@ import { map } from 'rxjs/operators';
 
 import { ApiResponse } from '../models/auth.models';
 import {
+  ClassementEntree,
   CreerQuizPayload,
   ModifierQuizPayload,
   Quiz
@@ -141,4 +142,15 @@ export class QuizService {
         })
       );
   }
+    
+  getClassement(quizId: string): Observable<ClassementEntree[]> {
+  return this.http
+    .get<ApiResponse<ClassementEntree[]>>(`${API_URL}/${quizId}/classement`)
+    .pipe(
+      map(res => {
+        if (!res.success) throw new Error(res.message);
+        return res.data;
+      })
+    );
+}
 }
