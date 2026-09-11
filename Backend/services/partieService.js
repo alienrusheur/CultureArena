@@ -82,4 +82,37 @@ async function create(userId, quizId, bonnesReponses) {
   };
 }
 
-module.exports = { getAll, getById, create };
+async function getClassement(quizId) {
+  if (!estIdValide(quizId)) {
+    throw serviceError('Identifiant de quiz invalide', 400, 'validator');
+  }
+
+  const classement = await Partie.aggregate([
+    { $match: { quizId: new mongoose.Types.ObjectId(quizId) } },
+    { $sort: { score: -1 } },
+    // Garde uniquement le meilleur score de chaque joueur pour ce quiz
+    { $group: { _id: '$userId', meilleurScore: { $first: '$score' } } },
+    { $sort: { meilleurScore: -1 } },
+    {
+      $lookup: {
+        from: 'utilisateurs',
+        localField: '_id',
+        foreignField: '_id',
+        as: 'utilisateur',
+      },
+    },
+    { $unwind: '$utilisateur' },
+    {
+      $project: {
+        _id: 0,
+        userId: '$_id',
+        pseudonyme: '$utilisateur.pseudonyme',
+        score: '$meilleurScore',
+      },
+    },
+  ]);
+
+  return classement;
+}
+
+module.exports = { getAll, getById, create, getClassement };

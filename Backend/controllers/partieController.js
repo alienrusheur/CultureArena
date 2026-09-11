@@ -54,4 +54,13 @@ async function terminerQuiz(req, res) {
   }
 }
 
-module.exports = { getAll, getById, terminerQuiz };
+async function getClassement(req, res) {
+  try {
+    const classement = await partieService.getClassement(req.params.id);
+    return success(res, classement, 200);
+  } catch (err) {
+    return handleErreur(res, err, 'Erreur lors de la récupération du classement');
+  }
+}
+
+module.exports = { getAll, getById, terminerQuiz, getClassement };

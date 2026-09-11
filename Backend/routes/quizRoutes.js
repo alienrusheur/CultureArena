@@ -7,6 +7,7 @@ const adminMiddleware = require('../middlewares/adminMiddleware');
 
 router.get('/', quizCtrl.getAll);
 router.get('/:id', quizCtrl.getById);
+router.get('/:id/classement', partieCtrl.getClassement);
 router.post('/', authMiddleware, quizCtrl.create);
 router.put('/:id', authMiddleware, quizCtrl.update);
 router.put('/:id/QuizDuJour', authMiddleware, adminMiddleware, quizCtrl.definirQuizDuJour);

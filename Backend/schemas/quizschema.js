@@ -51,7 +51,7 @@ const quizSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-quizSchema.pre('save', function (next) {
+quizSchema.pre('save', function () {
   this.nombreQuestions = this.questions.length;
 });
 

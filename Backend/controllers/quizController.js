@@ -46,7 +46,7 @@ async function update(req, res) {
 }
 
 async function remove(req, res) {
-  try {aa
+  try {
     const quizSupprime = await quizService.remove(req.params.id, req.user.id, req.user.role);
     return success(res, quizSupprime, 200);
   } catch (err) {
